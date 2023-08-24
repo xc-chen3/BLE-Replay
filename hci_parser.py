@@ -25,10 +25,10 @@ class ATTWriteParser:
         try:
             self.snoop_file = phone.pull_btsnoop(output_filename)
         except ValueError:
-            print "connect an Android device..."
+            print ("connect an Android device...")
             raise
         except Exception as e:
-            print e.message
+            print (e.message)
 
     def load_file(self, input_filename=None):
         """Load a btsnoop file from disk"""
@@ -46,7 +46,7 @@ class ATTWriteParser:
         try:
             records = bts.parse(self.snoop_file)
         except Exception as e:
-            print e.message
+            print (e.message)
             return None
 
         self.records = records
@@ -92,7 +92,7 @@ class ATTWriteParser:
         try:
             from prettytable import PrettyTable
         except:
-            print "prettytable required for this feature"
+            print ("prettytable required for this feature")
             return
 
         table = PrettyTable(['No.', 'Time', 'Handle', 'Data'])
@@ -105,4 +105,4 @@ class ATTWriteParser:
             time = r[1].strftime("%b-%d %H:%M:%S.%f")
             table.add_row([r[0], time, r[2], data])
 
-        print table
+        print (table)

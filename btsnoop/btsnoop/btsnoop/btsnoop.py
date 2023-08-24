@@ -127,7 +127,7 @@ def _validate_btsnoop_header(identification, version, data_link_type):
     assert identification == "btsnoop\0"
     assert version == 1
     assert data_link_type == 1002
-    print "Btsnoop capture file version {0}, type {1}".format(version, data_link_type)
+    print ("Btsnoop capture file version {0}, type {1}".format(version, data_link_type))
 
 def _validate_is_packetlogger_file(identification):
     """
@@ -252,24 +252,24 @@ def print_hdr():
     """
     Print the script header
     """
-    print ""
-    print "##############################"
-    print "#                            #"
-    print "#    btsnoop parser v0.1     #"
-    print "#                            #"
-    print "##############################"
-    print ""
+    print ("")
+    print ("##############################")
+    print ("#                            #")
+    print ("#    btsnoop parser v0.1     #")
+    print ("#                            #")
+    print ("##############################")
+    print ("")
 
 
 def main(filename):
     records = parse(filename)
-    print records
+    print (records)
     return 0
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print __doc__
+        print (__doc__)
         sys.exit(1)
 
     print_hdr()

@@ -44,19 +44,19 @@ def args_valid(args):
 
     if args.replay:
         if not (args.iface and args.addr):
-            print "You must specify an interface and device address"
+            print ("You must specify an interface and device address")
             return False
         if args.seclevel not in ["low", "medium", "high"]:
-            print "Security level must be low, medium, or high"
+            print ("Security level must be low, medium, or high")
             return False
         if args.addr_type not in ["public", "random"]:
-            print "Address type must be public or random"
+            print ("Address type must be public or random")
             return False
     elif not args.outfile:
-        print "You must specify an output option (-r, -of)"
+        print ("You must specify an output option (-r, -of)")
         return False
     if not (args.parse or args.fetch or args.infile):
-        print "You must specific an input option (-if, -p, -f)"
+        print ("You must specific an input option (-if, -p, -f)")
         return False
 
     return True
