@@ -64,4 +64,7 @@ python ble-replay.py -f -of replaydata.json
 Modify the hex values as needed and then play that file using:
 ```bash
 python ble-replay.py -if replaydata.json -r
-```
+``` 
+
+### Python3 Compatible
+
