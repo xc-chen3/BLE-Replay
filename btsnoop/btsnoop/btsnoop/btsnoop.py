@@ -54,16 +54,17 @@ def parse(filename):
     * timestamp
     * data
     """
-    with open(filename, "rb") as f:
 
+    with open(filename, "rb") as f:
         # Read file header
         (identification, version, type) = _read_file_header(f)
         pklg_version2 = (identification[1] == 0x01)
 
         # Check for btsnoop magic, if it doesn't exist, might be PacketLogger
         # format
-        if identification != "btsnoop\0":
+        if identification != b'btsnoop\x00':
             # Validate and rewind because PacketLogger files have no file header
+            print("identify error")
             _validate_is_packetlogger_file(identification)
             f.seek(0)
             # NEXT
@@ -73,14 +74,15 @@ def parse(filename):
 
         else:
             _validate_btsnoop_header(identification, version, type)
-
+            if f.closed:
+                print("file has closed")
             # Not using the following data:
             # record[1] - original length
             # record[4] - cumulative drops
             # seq_nbr, inc_len, flags, time64, data
             return map(lambda record:
                 (record[0], record[2], record[3], _parse_time(record[5]), record[6]),
-                _read_btsnoop_records(f))
+                _read_btsnoop_records(filename,f))
 
 
 def _read_file_header(f):
@@ -124,7 +126,7 @@ def _validate_btsnoop_header(identification, version, data_link_type):
     For SWAP, data link type should be:
         HCI UART (H4)	1002
     """
-    assert identification == "btsnoop\0"
+    assert identification == b'btsnoop\x00'
     assert version == 1
     assert data_link_type == 1002
     print ("Btsnoop capture file version {0}, type {1}".format(version, data_link_type))
@@ -135,7 +137,7 @@ def _validate_is_packetlogger_file(identification):
     """
     assert (identification[0] != 0x00 or (identification[1] != 0x00 and identification[1] != 0x01))
 
-def _read_btsnoop_records(f):
+def _read_btsnoop_records(filename,f):
     """
     A record should confirm to the following format
 
@@ -161,12 +163,19 @@ def _read_btsnoop_records(f):
     All integer values are stored in "big-endian" order, with the high-order bits first.
     """
     seq_nbr = 1
+    if f.closed:
+        print("file closed")
+        f = open(filename,'rb')
+        tmp = f.read(16)
+        print(tmp)
+
     while True:
+
         pkt_hdr = f.read(4 + 4 + 4 + 4 + 8)
         if not pkt_hdr or len(pkt_hdr) != 24:
             # EOF
             break
-
+        
         orig_len, inc_len, flags, drops, time64 = struct.unpack( ">IIIIq", pkt_hdr)
         assert orig_len == inc_len
 

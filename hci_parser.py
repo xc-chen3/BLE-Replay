@@ -78,6 +78,7 @@ class ATTWriteParser:
                         data = binascii.hexlify(att_data)
                         handle = data[2:4] + data[0:2]
                         self.att_writes.append([handle, data[4:], [], 1])
+        print("att",self.att_writes)
         return self.att_writes
 
     def write_to_file(self, output_filename=None):

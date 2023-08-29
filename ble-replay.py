@@ -72,6 +72,7 @@ def main():
         with open(args.infile, 'r') as infile:
             for line in infile:
                 replay_data.append(json.loads(line))
+
     else:
         logparser = hci_parser.ATTWriteParser()
         if args.parse:
@@ -85,7 +86,9 @@ def main():
         if args.outfile:
             logparser.write_to_file(args.outfile)
 
+    # print(replay_data)
     if args.replay:
+        print("replay......")
         util.gatt_writes(args.iface, args.addr, args.seclevel,
                          args.addr_type, replay_data)
         return

@@ -3,11 +3,12 @@
 """
 import sys
 import struct
-import hci_uart
-import hci_cmd
-import hci_evt
-import hci_acl
-import hci_sco
+
+from btsnoop.btsnoop.bt import hci_uart
+from btsnoop.btsnoop.bt import hci_cmd
+from btsnoop.btsnoop.bt import hci_evt
+from btsnoop.btsnoop.bt import hci_acl
+from btsnoop.btsnoop.bt import hci_sco
 
 
 PKT_TYPE_PARSERS = {hci_uart.HCI_CMD : hci_cmd.parse,

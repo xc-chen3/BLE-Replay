@@ -1,8 +1,8 @@
 import os
 import tempfile
-import ConfigParser
+import configparser
 
-from phone import Phone
+from btsnoop.btsnoop.android.phone import Phone
 
 
 BTSTACK_CONFIG_FILE = 'bt_stack.conf'
@@ -63,7 +63,7 @@ class SnoopPhone(Phone):
                     return self.fp.readline()
         
         # Parse key/values
-        parser = ConfigParser.SafeConfigParser()
+        parser = configparser.SafeConfigParser()
         with open(path, 'r') as f:
             parser.readfp(DummyHeaderFile(f))
             return dict(parser.items('dummy'))
